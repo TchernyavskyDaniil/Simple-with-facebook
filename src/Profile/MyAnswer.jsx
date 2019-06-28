@@ -76,6 +76,7 @@ const MyAnswer = ({
         selectValue
       };
 
+      // Update data for current user
       if (users) {
         users = users.filter(user => user.id !== id);
         users.push(newUserData);

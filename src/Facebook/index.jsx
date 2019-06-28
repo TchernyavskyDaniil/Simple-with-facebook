@@ -24,6 +24,7 @@ class Facebook extends Component {
     const usersData = JS.p(LS.get("usersData"));
     const currentUser = usersData && usersData.find(user => user.id === id);
 
+    // Added default settings form for new user
     if (!LS.get("userForm") || !currentUser) {
       LS.set("userForm", JS.s({ count: 1, selectValue: 1 }));
     } else if (usersData) {

@@ -17,7 +17,10 @@ const Users = styled.ul`
 
 const AllAnswers = ({ currentId, name }) => {
   const [users] = useState(JS.p(LS.get("usersData")) || []);
+
+  // Or every update using JS -> LS for users state what more expensive
   const [updatedUsers, updateList] = useState(users);
+
   const [isVisiblePopup, updatePopup] = useState(false);
 
   // Or using debounce for requests

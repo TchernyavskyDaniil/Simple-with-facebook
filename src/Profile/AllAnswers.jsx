@@ -1,6 +1,7 @@
-import React, { Fragment } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import styledMap from 'styled-map';
+import styledMap from "styled-map";
+import { JS, LS } from "../utils";
 
 const Container = styled.div``;
 
@@ -11,11 +12,11 @@ const Avatar = styled.img`
     default: 100px;
     defaultWidth: 50px;
   `};
-  
+
   height: ${styledMap`
     default: 100px;
     defaultHeight: 50px;
-  `}
+  `};
 `;
 
 const Name = styled.span`
@@ -32,25 +33,36 @@ const Users = styled.ul`
   padding: 6px;
 `;
 
-const User = styled.li``;
+const User = styled.li`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
 
 const IsComing = styled.span``;
 
 const Count = styled(Name)``;
 
-const AllAnswers = ({ userData: { picture: { data : { url }}, name }, count, selectValue }) => {
+const AllAnswers = () => {
+  const [users] = useState(JS.p(LS.get("usersData")) || []);
   return (
     <Container>
       <InputSearch type="search" />
       <Users>
-        <User>
-          <Avatar src={url} defaultHeight defaultWidth alt={name} />
-          <Name> {name} </Name>
-          {selectValue === 2 ? (
-            <IsComing> YES </IsComing>
-          ) : <IsComing> NO </IsComing>}
-          <Count> {count} </Count>
-        </User>
+        {users.map(({ id, img, name, count, selectValue }) => (
+          <User key={id}>
+            <Avatar src={img} defaultHeight defaultWidth alt={name} />
+            <Name> {name} </Name>
+            {selectValue === 2 ? (
+              <IsComing> YES </IsComing>
+            ) : (
+              <IsComing> NO </IsComing>
+            )}
+            <Count> {count} </Count>
+          </User>
+        ))}
       </Users>
     </Container>
   );

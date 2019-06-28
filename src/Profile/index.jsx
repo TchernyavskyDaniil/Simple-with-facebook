@@ -17,22 +17,17 @@ const Profile = ({ userData }) => {
   const [count, getStateCount] = useState(userForm.count || 1);
   const [selectValue, getSelectValue] = useState(userForm.selectValue || 1);
 
-  const getUpdateData = (method, value, key) => {
-    method(value);
-
-    userForm[key] = value;
-    LS.set("userForm", JS.s(userForm));
-  };
+  const getUpdateData = (method, value) => method(value);
 
   return (
     <>
-      <Header/>
+      <Header />
       <Main>
         <Switch>
           <Route
             exact
             path="/profile/my-answer"
-            render={() =>
+            render={() => (
               <MyAnswer
                 userData={userData}
                 count={count}
@@ -40,19 +35,10 @@ const Profile = ({ userData }) => {
                 selectValue={selectValue}
                 getSelectValue={getSelectValue}
                 getUpdateData={getUpdateData}
-              />}
-          />
-          <Route
-            exact
-            path="/profile/all-answers"
-            render={() =>
-              <AllAnswers
-                userData={userData}
-                selectValue={selectValue}
-                count={count}
               />
-            }
+            )}
           />
+          <Route exact path="/profile/all-answers" component={AllAnswers} />
         </Switch>
       </Main>
     </>

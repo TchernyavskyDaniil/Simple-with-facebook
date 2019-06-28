@@ -47,12 +47,43 @@ const Submit = styled.button`
   margin-top: 20px;
 `;
 
-const MyAnswer = ({ userData, count, getStateCount, selectValue, getSelectValue, getUpdateData }) => {
+const MyAnswer = ({
+  userData,
+  count,
+  getStateCount,
+  selectValue,
+  getSelectValue,
+  getUpdateData
+}) => {
   const submitForm = e => {
     e.preventDefault();
 
     if (selectValue !== 1) {
+      const {
+        picture: {
+          data: { url }
+        },
+        name,
+        id
+      } = userData;
+      let users = JS.p(LS.get("usersData"));
+      const newUser = {
+        id,
+        img: url,
+        name,
+        count,
+        selectValue
+      };
+
+      if (users) {
+        users = users.filter(user => user.id !== id);
+        users.push(newUser);
+      } else {
+        users = [newUser];
+      }
+
       LS.set("userForm", JS.s({ count, selectValue }));
+      LS.set("usersData", JS.s(users));
     }
   };
 
@@ -65,7 +96,7 @@ const MyAnswer = ({ userData, count, getStateCount, selectValue, getSelectValue,
       <WithMeLabel htmlFor="profile-with-me">
         <Desc> With me </Desc>
         <WithMeCount
-          onChange={e => getUpdateData(getStateCount, +e.target.value, "count")}
+          onChange={e => getUpdateData(getStateCount, +e.target.value)}
           id="profile-with-me"
           value={count}
           type="number"
@@ -73,9 +104,7 @@ const MyAnswer = ({ userData, count, getStateCount, selectValue, getSelectValue,
         />
       </WithMeLabel>
       <MySelect
-        onChange={e =>
-          getUpdateData(getSelectValue, +e.target.value, "selectValue")
-        }
+        onChange={e => getUpdateData(getSelectValue, +e.target.value)}
         value={selectValue}
       >
         <option value="1"> Нужно выбрать </option>

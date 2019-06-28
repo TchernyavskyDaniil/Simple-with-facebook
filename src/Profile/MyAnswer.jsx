@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { JS, LS } from "../utils";
 
@@ -53,7 +53,8 @@ const MyAnswer = ({
   getStateCount,
   selectValue,
   getSelectValue,
-  getUpdateData
+  getUpdateData,
+  updatePopup
 }) => {
   const submitForm = e => {
     e.preventDefault();
@@ -67,7 +68,7 @@ const MyAnswer = ({
         id
       } = userData;
       let users = JS.p(LS.get("usersData"));
-      const newUser = {
+      const newUserData = {
         id,
         img: url,
         name,
@@ -77,13 +78,15 @@ const MyAnswer = ({
 
       if (users) {
         users = users.filter(user => user.id !== id);
-        users.push(newUser);
+        users.push(newUserData);
       } else {
-        users = [newUser];
+        users = [newUserData];
       }
 
       LS.set("userForm", JS.s({ count, selectValue }));
       LS.set("usersData", JS.s(users));
+    } else {
+      updatePopup(true);
     }
   };
 

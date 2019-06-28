@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const Container = styled.header`
+const Container = styled.div`
   margin: 40px;
   display: flex;
   flex-direction: row;
@@ -25,7 +25,7 @@ const ProfileLink = styled(NavLink)`
   }
 `;
 
-const Header = () => (
+const ProfileHeader = () => (
   <Container>
     <ProfileLink to="/profile/my-answer" activeClassName="selected">
       My answer
@@ -36,4 +36,4 @@ const Header = () => (
   </Container>
 );
 
-export default Header;
+export default ProfileHeader;

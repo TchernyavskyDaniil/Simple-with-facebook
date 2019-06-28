@@ -1,31 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import styledMap from "styled-map";
+
 import { JS, LS } from "../utils";
+import UserInfo from "./UserInfo";
+import RemoveAnswer from "../Popups/RemoveAnswer";
 
 const Container = styled.div``;
 
 const InputSearch = styled.input``;
-
-const Avatar = styled.img`
-  width: ${styledMap`
-    default: 100px;
-    defaultWidth: 50px;
-  `};
-
-  height: ${styledMap`
-    default: 100px;
-    defaultHeight: 50px;
-  `};
-`;
-
-const Name = styled.span`
-  padding: 10px 20px;
-  margin: 0 10px;
-  font-size: 16px;
-  border: 1px solid lightgray;
-  border-radius: 20px;
-`;
 
 const Users = styled.ul`
   list-style: none;
@@ -33,37 +15,41 @@ const Users = styled.ul`
   padding: 6px;
 `;
 
-const User = styled.li`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-`;
-
-const IsComing = styled.span``;
-
-const Count = styled(Name)``;
-
-const AllAnswers = () => {
+const AllAnswers = ({ currentId, name }) => {
   const [users] = useState(JS.p(LS.get("usersData")) || []);
+  const [updatedUsers, updateList] = useState(users);
+  const [isVisiblePopup, updatePopup] = useState(false);
+
+  // Or using debounce for requests
+  const getFilteredData = e =>
+    updateList(users.filter(user => user.name.includes(e.target.value)));
+
   return (
     <Container>
-      <InputSearch type="search" />
+      <InputSearch
+        onChange={getFilteredData}
+        type="search"
+        placeholder="Поиск по имени"
+      />
       <Users>
-        {users.map(({ id, img, name, count, selectValue }) => (
-          <User key={id}>
-            <Avatar src={img} defaultHeight defaultWidth alt={name} />
-            <Name> {name} </Name>
-            {selectValue === 2 ? (
-              <IsComing> YES </IsComing>
-            ) : (
-              <IsComing> NO </IsComing>
-            )}
-            <Count> {count} </Count>
-          </User>
+        {updatedUsers.map(({ id, img, name, count, selectValue }) => (
+          <UserInfo
+            key={id}
+            currentId={currentId}
+            data={{ id, img, name, count, selectValue, currentId }}
+            updatePopup={updatePopup}
+          />
         ))}
       </Users>
+      {isVisiblePopup && (
+        <RemoveAnswer
+          name={name}
+          currentId={currentId}
+          updatedUsers={updatedUsers}
+          updateList={updateList}
+          updatePopup={updatePopup}
+        />
+      )}
     </Container>
   );
 };

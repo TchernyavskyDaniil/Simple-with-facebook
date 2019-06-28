@@ -9,25 +9,31 @@ const App = () => {
   const [isPermitted, getPermitted] = useState(false);
   const [userData, getUserData] = useState({});
   return (
-    <Switch>
-      <Route
-        exact
-        path="/facebook-auth"
-        render={props => (
-          <Facebook
-            push={props.history.push}
-            getPermitted={getPermitted}
-            getUserData={getUserData}
+    <>
+      <header />
+      <main>
+        <Switch>
+          <Route
+            exact
+            path="/facebook-auth"
+            render={props => (
+              <Facebook
+                push={props.history.push}
+                getPermitted={getPermitted}
+                getUserData={getUserData}
+              />
+            )}
           />
-        )}
-      />
-      <PrivateRoute
-        path="/profile"
-        permitted={isPermitted}
-        render={() => <Profile userData={userData} />}
-      />
-      <Redirect from="/" to="/facebook-auth" />
-    </Switch>
+          <PrivateRoute
+            path="/profile"
+            permitted={isPermitted}
+            render={() => <Profile userData={userData} />}
+          />
+          <Redirect from="/" to="/facebook-auth" />
+        </Switch>
+      </main>
+      <footer />
+    </>
   );
 };
 

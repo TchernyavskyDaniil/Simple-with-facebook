@@ -1,24 +1,40 @@
-import React from 'react';
-import FacebookLogin from 'react-facebook-login';
+import React, { useState } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 
-import { key } from "./key";
+import Facebook from "./Facebook";
+import Profile from "./Profile";
+import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
-  const responseFacebook = (response) => {
-    console.log(response);
-  }
-
+  const [isPermitted, getPermitted] = useState(false);
+  const [userData, getUserData] = useState({});
   return (
-    <div className="App">
-      <h1>LOGIN WITH FACEBOOK AND GOOGLE</h1>
-
-      <FacebookLogin
-        appId={key}
-        fields="name,email,picture"
-        callback={responseFacebook}
-      />
-    </div>
+    <>
+      <header />
+      <main>
+        <Switch>
+          <Route
+            exact
+            path="/facebook-auth"
+            render={props => (
+              <Facebook
+                push={props.history.push}
+                getPermitted={getPermitted}
+                getUserData={getUserData}
+              />
+            )}
+          />
+          <PrivateRoute
+            path="/profile"
+            permitted={isPermitted}
+            render={() => <Profile userData={userData} />}
+          />
+          <Redirect from="/" to="/facebook-auth" />
+        </Switch>
+      </main>
+      <footer />
+    </>
   );
-}
+};
 
 export default App;

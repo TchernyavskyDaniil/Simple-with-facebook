@@ -3,15 +3,8 @@ import styled from "styled-components";
 import styledMap from "styled-map";
 
 const Avatar = styled.img`
-  width: ${styledMap`
-    default: 100px;
-    defaultWidth: 50px;
-  `};
-
-  height: ${styledMap`
-    default: 100px;
-    defaultHeight: 50px;
-  `};
+  width: 50px;
+  height: 50px;
 `;
 
 const Name = styled.span`

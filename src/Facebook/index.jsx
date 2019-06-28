@@ -20,9 +20,26 @@ class Facebook extends Component {
     isError: false
   };
 
-  getFormUserData = id => {
+  getFormUserData = (id, url, name) => {
     const usersData = JS.p(LS.get("usersData"));
     const currentUser = usersData && usersData.find(user => user.id === id);
+
+    // For update user info after auth
+    if (currentUser) {
+      LS.set(
+        "usersData",
+        JS.s(
+          usersData.map(user => {
+            if (user.id === id) {
+              user.img = url;
+              user.name = name;
+            }
+
+            return user;
+          })
+        )
+      );
+    }
 
     // Added default settings form for new user
     if (!LS.get("userForm") || !currentUser) {
@@ -42,7 +59,7 @@ class Facebook extends Component {
 
   responseFacebook = ({ picture, name, id }) => {
     if (id) {
-      this.getFormUserData(id);
+      this.getFormUserData(id, picture.data.url, name);
 
       this.props.getUserData({ picture, name, id });
       this.props.getPermitted(true);

@@ -16,11 +16,20 @@ const Title = styled.h1`
 `;
 
 class Facebook extends Component {
+  state = {
+    isError: false,
+  };
+
   responseFacebook = ({ picture, name, id }) => {
-    LS.set("userData", JS.s({ picture, name, id }));
-    !LS.get("userForm") && LS.set("userForm", JS.s({ count: 1, selectValue: 1}));
-    this.props.getPermitted(true);
-    this.props.push("/profile/my-answer");
+    if (id) {
+      !LS.get("userForm") &&
+      LS.set("userForm", JS.s({ count: 1, selectValue: 1 }));
+      this.props.getUserData({ picture, name, id });
+      this.props.getPermitted(true);
+      this.props.push("/profile/my-answer");
+    } else {
+      this.setState({ isError: true });
+    }
   };
 
   render() {
@@ -32,6 +41,7 @@ class Facebook extends Component {
           fields="name,email,picture"
           callback={this.responseFacebook}
         />
+        {this.state.isError && (<p> Произошла ошибка при авторизации </p>)}
       </FacebookContainer>
     );
   }

@@ -12,20 +12,51 @@ const Main = styled.main`
   text-align: center;
 `;
 
-const Profile = () => {
-  const [userData] = useState(JS.p(LS.get("userData")));
+const Profile = ({ userData }) => {
+  const [userForm] = useState(JS.p(LS.get("userForm")));
+  const [count, getStateCount] = useState(userForm.count || 1);
+  const [selectValue, getSelectValue] = useState(userForm.selectValue || 1);
+
+  const getUpdateData = (method, value, key) => {
+    method(value);
+
+    userForm[key] = value;
+    LS.set("userForm", JS.s(userForm));
+  };
 
   return (
     <>
       <Header/>
       <Main>
         <Switch>
-          <Route exact path="/profile/my-answer" render={() => <MyAnswer userData={userData}/>}/>
-          <Route exact path="/profile/all-answers" component={AllAnswers}/>
+          <Route
+            exact
+            path="/profile/my-answer"
+            render={() =>
+              <MyAnswer
+                userData={userData}
+                count={count}
+                getStateCount={getStateCount}
+                selectValue={selectValue}
+                getSelectValue={getSelectValue}
+                getUpdateData={getUpdateData}
+              />}
+          />
+          <Route
+            exact
+            path="/profile/all-answers"
+            render={() =>
+              <AllAnswers
+                userData={userData}
+                selectValue={selectValue}
+                count={count}
+              />
+            }
+          />
         </Switch>
       </Main>
     </>
-  )
+  );
 };
 
 export default Profile;

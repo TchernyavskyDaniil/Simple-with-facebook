@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { JS, LS } from "../utils";
 
@@ -47,26 +47,13 @@ const Submit = styled.button`
   margin-top: 20px;
 `;
 
-const MyAnswer = ({ userData }) => {
-  const [userForm] = useState(JS.p(LS.get("userForm")));
-  const [count, getStateCount] = useState(userForm ? userForm.count : 1);
-  const [selectValue, getSelectValue] = useState(
-    userForm ? userForm.selectValue : 1
-  );
-
+const MyAnswer = ({ userData, count, getStateCount, selectValue, getSelectValue, getUpdateData }) => {
   const submitForm = e => {
     e.preventDefault();
 
     if (selectValue !== 1) {
       LS.set("userForm", JS.s({ count, selectValue }));
     }
-  };
-
-  const getUpdateData = (method, value, key) => {
-    method(value);
-
-    userForm[key] = value;
-    LS.set("userForm", JS.s(userForm));
   };
 
   return (

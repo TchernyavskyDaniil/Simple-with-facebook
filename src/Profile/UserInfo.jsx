@@ -35,7 +35,7 @@ const Count = styled(Name)``;
 
 const UserInfo = ({ data, updatePopup, currentId }) => (
   <User onClick={() => currentId === data.id && updatePopup(true)}>
-    <Avatar src={data.img} defaultHeight defaultWidth alt={data.name} />
+    <Avatar src={data.img} alt={data.name} />
     <Name currentUser={data.id === data.currentId}> {data.name} </Name>
     {data.selectValue === 2 ? (
       <>
